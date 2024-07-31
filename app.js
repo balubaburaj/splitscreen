@@ -92,7 +92,7 @@ app.controller("MainCtrl", function ($scope, $timeout) {
     for (i = 0; i < $scope.playerList.length; i++) {
       $scope.playerList[i].stopVideo();
       $scope.playerList[i].mute();
-      video[i].isMuted = true;
+      $scope.videos[i].isMuted = true;
     }
   };
   $scope.startAll = function () {
