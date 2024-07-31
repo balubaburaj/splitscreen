@@ -1,1 +1,220 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+
+<html ng-app="spit-screen">
+  <head>
+    <meta charset="utf-8" />
+    <title>Youtube split screen helper</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      document.write('<base href="' + document.location + '" />');
+    </script>
+
+    <script
+      src="node_modules/jquery/dist/jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="node_modules/angular/angular.js"
+      type="text/javascript"
+    ></script>
+    <!-- <link
+      src="node_modules/bootstrap3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+    /> -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="node_modules/bootstrap3/dist/css/bootstrap.min.css"
+    />
+    <script
+      src="node_modules/bootstrap3/dist/js/bootstrap.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="node_modules/angular-youtube-embed/dist/angular-youtube-embed.min.js"></script>
+    <script src="app.js"></script>
+
+    <style>
+      .quarter-screen {
+        height: 50vh; /* 50% of the viewport height */
+        border: 1px solid #ccc; /* Optional: to visualize the split */
+        overflow: auto; /* To handle overflow content */
+      }
+    </style>
+    <script>
+      var elem = document.documentElement;
+      function openFullscreen() {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+          /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          /* IE11 */
+          elem.msRequestFullscreen();
+        }
+      }
+
+      function closeFullscreen() {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          /* IE11 */
+          document.msExitFullscreen();
+        }
+      }
+    </script>
+    <script>
+      //var button = document.getElementById("toggle");
+      var container = document.documentElement;
+
+      function fullScreenToggle() {
+        if (document.fullscreenElement) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+        } else {
+          if (!document.mozFullScreen && !document.webkitFullScreen) {
+            if (container.requestFullscreen) {
+              container.requestFullscreen();
+            } else if (container.mozRequestFullScreen) {
+              container.mozRequestFullScreen();
+            } else if (container.webkitRequestFullScreen) {
+              container.webkitRequestFullScreen();
+            } else if (container.msRequestFullscreen) {
+              container.msRequestFullscreen();
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body
+    ng-controller="MainCtrl"
+    class="container-fluid"
+    style="padding-top: 1px; background-color: black"
+  >
+    <div class="row col-lg-12 form-group">
+      <button class="btn btn-info" ng-click="pauseAll()">
+        <span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
+        All
+      </button>
+      <button class="btn btn-success" ng-click="startAll()">
+        <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Play
+        All
+      </button>
+      <button class="btn btn-warning" ng-click="muteAll()">
+        <span class="glyphicon glyphicon-volume-off" aria-hidden="true"></span>
+        Mute All
+      </button>
+      <button class="btn btn-danger" ng-click="stopAll()">
+        <span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+        all
+      </button>
+      <button class="btn btn-default pull-right" onclick="fullScreenToggle();">
+        <span class="glyphicon glyphicon-fullscreen"></span>
+      </button>
+    </div>
+    <div class="">
+      <div ng-repeat="video in videos | orderBy: '-date'" class="form-group">
+        <div class="col-md-6" style="border: 1px solid white">
+          <!-- <youtube-video video-id="theBestVideo"></youtube-video> -->
+          <div class="row">
+            <youtube-video
+              video-url="video.url"
+              player-vars="playerVars"
+              player="bestplayer"
+              player-width="'100%'"
+              class=""
+            ></youtube-video>
+          </div>
+          <div class="row form-group">
+            <button
+              class="btn btn-sm btn-info"
+              ng-click="unMute(bestplayer,video)"
+              ng-if="video.isMuted"
+              id="unmute-tbn"
+            >
+              <b
+                ><span
+                  class="glyphicon glyphicon-volume-off"
+                  aria-hidden="true"
+                ></span
+              ></b>
+            </button>
+            <button
+              class="btn btn-sm btn-info"
+              ng-if="!video.isMuted"
+              ng-click="mute(bestplayer,video)"
+              id="mute-btn"
+            >
+              <b
+                ><span
+                  class="glyphicon glyphicon-volume-up"
+                  aria-hidden="true"
+                ></span
+              ></b>
+            </button>
+            <button
+              class="btn btn-sm btn-info"
+              ng-click="play(bestplayer)"
+              ng-if="bestplayer.currentState!='playing'"
+            >
+              <b
+                ><span
+                  class="glyphicon glyphicon-play"
+                  aria-hidden="true"
+                ></span
+              ></b>
+            </button>
+            <button
+              class="btn btn-sm btn-info"
+              ng-click="pause(bestplayer)"
+              ng-if="bestplayer.currentState=='playing'"
+            >
+              <b
+                ><span
+                  class="glyphicon glyphicon-pause"
+                  aria-hidden="true"
+                ></span
+              ></b>
+            </button>
+            <button
+              class="btn btn-sm btn-info"
+              ng-click="stop(bestplayer)"
+              ng-if="bestplayer.currentState=='playing'"
+            >
+              <b
+                ><span
+                  class="glyphicon glyphicon-stop"
+                  aria-hidden="true"
+                ></span
+              ></b>
+            </button>
+            {{bestplayer.id}}-{{bestplayer.videoTitle}}
+          </div>
+
+          <!-- <iframe
+              width="100%"
+              ng-src="{{video.url | trusted}}"
+              frameborder="0"
+              allowfullscreen
+              class="quarter-screen"
+            ></iframe> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row"></div>
+  </body>
+</html>
