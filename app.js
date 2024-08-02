@@ -55,6 +55,7 @@ app.controller("MainCtrl", function ($scope, $timeout) {
   $scope.unMute = function (player, video) {
     for (i = 0; i < $scope.playerList.length; i++) {
       $scope.playerList[i].mute();
+      $scope.videos[i].isMuted = true;
     }
     player.unMute();
     video.isMuted = false;
