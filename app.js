@@ -8,29 +8,57 @@ app.controller("MainCtrl", function ($scope, $timeout) {
     autoplay: 0,
     mute: 1,
   };
+  //Malayalam News
+  // $scope.videos = [
+  //   {
+  //     url: "https://www.youtube.com/watch?v=1wECsnGZcfc",
+  //     isMuted: true,
+  //   },
+  //   {
+  //     url: "https://www.youtube.com/live/HGOiuQUwqEw",
+  //     isMuted: true,
+  //   },
+  //   {
+  //     url: "https://www.youtube.com/live/Ko18SgceYX8",
+  //     isMuted: true,
+  //   },
+  //   {
+  //     url: "https://www.youtube.com/live/YGEgelAiUf0",
+  //     isMuted: true,
+  //   },
+  //   {
+  //     url: "https://www.youtube.com/live/tgBTspqA5nY",
+  //     isMuted: true,
+  //   },
+  //   {
+  //     url: "https://www.youtube.com/live/GIT1lX0NdHo",
+  //     isMuted: true,
+  //   },
+  // ];
+  //US News
   $scope.videos = [
     {
-      url: "https://www.youtube.com/watch?v=1wECsnGZcfc",
+      url: "https://www.youtube.com/watch?v=DYpNU_3oPYk",
       isMuted: true,
     },
     {
-      url: "https://www.youtube.com/live/HGOiuQUwqEw",
+      url: "https://www.youtube.com/watch?v=YDfiTGGPYCk",
       isMuted: true,
     },
     {
-      url: "https://www.youtube.com/live/Ko18SgceYX8",
+      url: "https://www.youtube.com/watch?v=LS8amqeDbS8",
       isMuted: true,
     },
     {
-      url: "https://www.youtube.com/live/YGEgelAiUf0",
+      url: "https://www.youtube.com/watch?v=cl5QtyXhYiQ",
       isMuted: true,
     },
     {
-      url: "https://www.youtube.com/live/tgBTspqA5nY",
+      url: "https://www.youtube.com/watch?v=eFCiva4m3Zk",
       isMuted: true,
     },
     {
-      url: "https://www.youtube.com/live/GIT1lX0NdHo",
+      url: "https://www.youtube.com/watch?v=LIV9HM5Yj80",
       isMuted: true,
     },
   ];
